@@ -13,5 +13,42 @@
 
 .todo-item {
   margin-bottom: 20px;
+  -webkit-transition: all .4s ease;
+  transition: all .4s ease;
+}
+
+.todo-item:hover {
+  -webkit-box-shadow: 0 5px 32px rgba(103, 122, 141, 0.17);
+          box-shadow: 0 5px 32px rgba(103, 122, 141, 0.17);
+}
+
+.todo-item:hover .button-controls {
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+  visibility: visible;
+  opacity: 1;
+}
+
+.button-controls {
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  -webkit-transform: translateY(5px);
+          transform: translateY(5px);
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: all .4s ease;
+  transition: all .4s ease;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 50px;
 }
 /*# sourceMappingURL=style.css.map */
