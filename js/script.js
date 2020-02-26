@@ -39,41 +39,51 @@ function render(arrayTasks) {
 
     todoList.innerHTML = ''
 
-    arrayTasks.forEach((element, index) => {
+    if(arrayTasks.length == 0){
+        todoList.innerHTML = 'Список задач пока пуст.'
+    }
+    else{
 
-        const block =
-            `<div class="todo-item card">
-            <div class="card-body">
-                <div class="todo-name card-title">
-                    Name 1
+        arrayTasks.forEach((element, index) => {
+
+            const block =
+                `<div class="todo-item card">
+                <div class="card-body">
+                    <div class="todo-name card-title">
+                        Name 1
+                    </div>
+                    <div class="todo-description">
+                        ${element.task}
+                    </div>
                 </div>
-                <div class="todo-description">
-                    ${element.task}
+                <div class="button-controls">
+                    <div class="edit-card" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt"></i></div>
+                    <div class="remove-card"><i class="fas fa-trash-alt"></i></div>
                 </div>
-            </div>
-            <div class="button-controls">
-                <div class="edit-card" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-pencil-alt"></i></div>
-                <div class="remove-card"><i class="fas fa-trash-alt"></i></div>
-            </div>
-        </div>`;
-
-        todoList.insertAdjacentHTML('afterbegin', block);
-
-        const clearButton = document.querySelector(".remove-card");
-        clearButton.addEventListener('click', () => {
-            arrayTasks.splice(index, 1);
-            localStorage.setItem(KEY_LOCAL_STORAGE, JSON.stringify(arrayTasks));
-            render(arrayTasks);
+            </div>`;
+    
+            todoList.insertAdjacentHTML('afterbegin', block);
+    
+            const clearButton = document.querySelector(".remove-card");
+            clearButton.addEventListener('click', () => {
+                arrayTasks.splice(index, 1);
+                localStorage.setItem(KEY_LOCAL_STORAGE, JSON.stringify(arrayTasks));
+                render(arrayTasks);
+            });
+    
+            const buttonEdit = document.querySelector('.edit-card');
+            buttonEdit.addEventListener('click', () => {
+                let arrayTasks = JSON.parse(localStorage.getItem(KEY_LOCAL_STORAGE));  
+                let valueTask = arrayTasks[index].task          
+                editTaskInput.value = valueTask;
+                editTaskInput.setAttribute('data-index-array', index);
+            });
+    
         });
 
-        const buttonEdit = document.querySelector('.edit-card');
-        buttonEdit.addEventListener('click', () => {
-            let arrayTasks = JSON.parse(localStorage.getItem(KEY_LOCAL_STORAGE));  
-            let valueTask = arrayTasks[index].task          
-            editTaskInput.value = valueTask;
-        });
+    }
 
-    });
+    
 }
 
 function addTask() {
@@ -91,3 +101,11 @@ function addTask() {
         buttonAdd.setAttribute('disabled', 'disabled');
     }
 }
+
+buttonSaveChanges.addEventListener('click', (e) => {
+    e.preventDefault();
+    let index = editTaskInput.getAttribute('data-index-array');
+    arrayTasks[index].task = editTaskInput.value;
+    localStorage.setItem(KEY_LOCAL_STORAGE, JSON.stringify(arrayTasks));
+    render(arrayTasks);
+});
